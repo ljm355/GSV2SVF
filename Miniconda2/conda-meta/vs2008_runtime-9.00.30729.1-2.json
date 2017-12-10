@@ -1,0 +1,25 @@
+{
+  "arch": "x86_64", 
+  "build": "2", 
+  "build_number": 2, 
+  "depends": [], 
+  "files": [
+    "Library/bin/msvcm90.dll", 
+    "Library/bin/msvcp90.dll", 
+    "Library/bin/msvcr90.dll", 
+    "Library/bin/vcomp90.dll", 
+    "msvcm90.dll", 
+    "msvcp90.dll", 
+    "msvcr90.dll", 
+    "vcomp90.dll"
+  ], 
+  "installed_by": "Miniconda2-4.1.11-Windows-x86_64", 
+  "license": "Proprietary", 
+  "link": null, 
+  "md5": "f57e4b9f3dad8fcda71215e51a54f924", 
+  "name": "vs2008_runtime", 
+  "platform": "win", 
+  "subdir": "win-64", 
+  "url": "https://repo.continuum.io/pkgs/free/win-64/vs2008_runtime-9.00.30729.1-2.tar.bz2", 
+  "version": "9.00.30729.1"
+}

@@ -1,0 +1,35 @@
+{
+  "arch": "x86_64", 
+  "build": "vc9_2", 
+  "build_number": 2, 
+  "channel": "https://repo.continuum.io/pkgs/free/win-64", 
+  "date": "2016-09-08", 
+  "depends": [], 
+  "features": "vc9", 
+  "files": [
+    "Library/include/jconfig.h", 
+    "Library/include/jerror.h", 
+    "Library/include/jmorecfg.h", 
+    "Library/include/jpegint.h", 
+    "Library/include/jpeglib.h", 
+    "Library/lib/jpeg.lib", 
+    "Library/lib/libjpeg.lib"
+  ], 
+  "fn": "jpeg-8d-vc9_2.tar.bz2", 
+  "license": "Custom free software license", 
+  "license_family": "Other", 
+  "link": {
+    "source": "C:\\Miniconda2\\pkgs\\jpeg-8d-vc9_2", 
+    "type": "hard-link"
+  }, 
+  "md5": "62f2e7bfe17ba52cb14b56f5cdce3ba1", 
+  "name": "jpeg", 
+  "platform": "win", 
+  "priority": 1, 
+  "requires": [], 
+  "schannel": "defaults", 
+  "size": 180133, 
+  "subdir": "win-64", 
+  "url": "https://repo.continuum.io/pkgs/free/win-64/jpeg-8d-vc9_2.tar.bz2", 
+  "version": "8d"
+}

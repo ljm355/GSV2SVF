@@ -1,0 +1,49 @@
+{
+  "arch": "x86_64", 
+  "build": "py27_0", 
+  "build_number": 0, 
+  "channel": "https://repo.continuum.io/pkgs/free/win-64", 
+  "date": "2017-05-16", 
+  "depends": [
+    "cryptography >=1.7", 
+    "python 2.7*", 
+    "six >=1.5.2"
+  ], 
+  "files": [
+    "Lib/site-packages/OpenSSL/SSL.py", 
+    "Lib/site-packages/OpenSSL/SSL.pyc", 
+    "Lib/site-packages/OpenSSL/__init__.py", 
+    "Lib/site-packages/OpenSSL/__init__.pyc", 
+    "Lib/site-packages/OpenSSL/_util.py", 
+    "Lib/site-packages/OpenSSL/_util.pyc", 
+    "Lib/site-packages/OpenSSL/crypto.py", 
+    "Lib/site-packages/OpenSSL/crypto.pyc", 
+    "Lib/site-packages/OpenSSL/rand.py", 
+    "Lib/site-packages/OpenSSL/rand.pyc", 
+    "Lib/site-packages/OpenSSL/tsafe.py", 
+    "Lib/site-packages/OpenSSL/tsafe.pyc", 
+    "Lib/site-packages/OpenSSL/version.py", 
+    "Lib/site-packages/OpenSSL/version.pyc", 
+    "Lib/site-packages/pyOpenSSL-17.0.0-py2.7.egg-info/PKG-INFO", 
+    "Lib/site-packages/pyOpenSSL-17.0.0-py2.7.egg-info/SOURCES.txt", 
+    "Lib/site-packages/pyOpenSSL-17.0.0-py2.7.egg-info/dependency_links.txt", 
+    "Lib/site-packages/pyOpenSSL-17.0.0-py2.7.egg-info/requires.txt", 
+    "Lib/site-packages/pyOpenSSL-17.0.0-py2.7.egg-info/top_level.txt"
+  ], 
+  "fn": "pyopenssl-17.0.0-py27_0.tar.bz2", 
+  "license": "Apache Software License", 
+  "license_family": "Apache", 
+  "link": {
+    "source": "C:\\Miniconda2\\pkgs\\pyopenssl-17.0.0-py27_0", 
+    "type": "hard-link"
+  }, 
+  "md5": "e9aedb3beb18d6b763bbfab777ce2406", 
+  "name": "pyopenssl", 
+  "platform": "win", 
+  "priority": 0, 
+  "schannel": "defaults", 
+  "size": 75141, 
+  "subdir": "win-64", 
+  "url": "https://repo.continuum.io/pkgs/free/win-64/pyopenssl-17.0.0-py27_0.tar.bz2", 
+  "version": "17.0.0"
+}

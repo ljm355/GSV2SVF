@@ -1,0 +1,25 @@
+{
+  "arch": "x86_64", 
+  "build": "0", 
+  "build_number": 0, 
+  "channel": "https://repo.continuum.io/pkgs/free/win-64", 
+  "date": "2016-07-28", 
+  "depends": [], 
+  "files": [], 
+  "fn": "conda-env-2.6.0-0.tar.bz2", 
+  "license": "BSD", 
+  "link": {
+    "source": "C:\\Miniconda2\\pkgs\\conda-env-2.6.0-0", 
+    "type": "hard-link"
+  }, 
+  "md5": "11cd1221fd2b3d7b84d51175b92ccf15", 
+  "name": "conda-env", 
+  "platform": "win", 
+  "priority": 1, 
+  "requires": [], 
+  "schannel": "defaults", 
+  "size": 498, 
+  "subdir": "win-64", 
+  "url": "https://repo.continuum.io/pkgs/free/win-64/conda-env-2.6.0-0.tar.bz2", 
+  "version": "2.6.0"
+}

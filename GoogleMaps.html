@@ -1,0 +1,495 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.rawgit.com/lingtalfi/simpledrag/master/simpledrag.js"></script>
+
+    <style type="text/css">
+
+        html, body {
+            height: 100%;
+             margin: 0;
+             padding: 0;
+        }
+
+        .panes-container {
+            height: 100%;
+        }
+
+        .top-pane {
+ 
+            height: 49.5%;
+            background: #ccc;
+        }
+
+        .panes-separator {
+            height: 1%;
+            background: grey;
+            position: relative;
+            cursor: col-resize;
+        }
+
+        .bottom-pane {
+            width: 100%;
+            height: 49.5%;
+  
+            background: #eee;
+        }
+
+        .panes-container,
+        .panes-separator,
+        .top-pane,
+        .bottom-pane {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="panes-container">
+    <div class="top-pane" id="top-pane">
+        <script>
+        var map;
+        var panorama;
+        var sv;
+        var svf = 0;
+        var polyline;
+        var curLatLon = "";
+        var interpolate = false;
+        var samplePos = -1;
+        var samplingdist = 5;
+        var samples_markers = [];
+        var samples_num = [];
+        var samples_panoinfos = [];
+        var results_markers = [];
+        var results_panoinfos = [];
+        var EARTH_RADIUS = 6378137;
+        var rectangle = null;
+        function degs2radians(degs) {
+            return degs * (Math.PI / 180.0);
+        }
+        function great_circle_distance(lat1, lon1, lat2, lon2) {
+            dLat = degs2radians(lat2 - lat1);
+            dLon = degs2radians(lon2 - lon1);
+            a = (Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(degs2radians(lat1)) * Math.cos(degs2radians(lat2)) *
+                    Math.sin(dLon / 2) * Math.sin(dLon / 2));
+            c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            d = EARTH_RADIUS * c;
+            return d;
+        }
+        function getColor(val) {
+            r = Math.round(val * 255.0);
+            g = Math.round((1.0 - val) * 255.0);
+            color = 'rgb(' + r + ', ' + g + ', ' + '0)';
+            //alert(color);
+            return 'rgb(' + r + ', ' + g + ', ' + '0)';
+        }
+        function initMap() {
+            sv = new google.maps.StreetViewService();
+            map = new google.maps.Map(document.getElementById('top-pane'), {
+                center: { lat: 40.7831, lng: -73.9712 },
+                streetViewControl: true,
+                zoom: 15
+            });
+            polyline = new google.maps.Polyline({
+                strokeColor: '#000000',
+                strokeOpacity: 1.0,
+                strokeWeight: 3
+            });
+            polyline.setMap(map);
+            panorama = new google.maps.StreetViewPanorama(document.getElementById('bottom-pane'),
+                {
+                    position: { lat: 37.869260, lng: -122.254811 },
+                    pov: { heading: 165, pitch: 0 },
+                    zoom: 1
+                });
+
+            google.maps.event.addListener(map, 'rightclick', function (event) {
+                this.curLatLon = event.latLng
+                sv.getPanorama({ location: event.latLng, radius: 50 }, updateSVData);
+            });
+
+            google.maps.event.addListener(map, 'click', function (event) {
+                clickCallback(event.latLng);
+            });
+
+            google.maps.event.addListenerOnce(map, 'tilesloaded', function () {
+                google.maps.event.addListenerOnce(map, 'tilesloaded', function () {
+                    google.maps.event.trigger(map, 'resize');
+                });
+            });
+            google.maps.event.trigger(panorama, 'resize')
+            
+            function clickCallback(pnt) {
+
+                // var lat = pnt.lat();
+                // lat = lat.toFixed(4);
+                // var lng = pnt.lng();
+                // lng = lng.toFixed(4);
+                // console.log("Latitude: " + lat + "  Longitude: " + lng);
+                this.curLatLon = pnt
+                mainWin.click(pnt.lat() + "," + pnt.lng() + "," + pnt);
+                //mainWin.updateCoords(pnt.lat() + "," + pnt.lng());
+                // panorama.setPosition(new google.maps.LatLng(lat, lng));
+            }
+            // Adds a marker to the map and push to the array.
+        }
+        function zoom(lat, lon) {
+            map.setCenter(new google.maps.LatLng(lat, lon));
+        }
+        function select() {
+            if (rectangle === null) {
+                bounds = map.getBounds();
+                lat = map.getCenter().lat();
+                lng = map.getCenter().lng();
+                xsize = bounds.getNorthEast().lng() - bounds.getSouthWest().lng();
+                ysize = bounds.getNorthEast().lat() - bounds.getSouthWest().lat();
+                span = xsize;
+                if (span > ysize)
+                    span = ysize;
+                halfspan = span * 0.5
+                bounds = new google.maps.LatLngBounds(new google.maps.LatLng(lat - halfspan, lng - halfspan), new google.maps.LatLng(lat + halfspan, lng + halfspan));
+                rectangle = new google.maps.Rectangle({
+                    bounds: bounds,
+                    editable: true,
+                    draggable: true
+                });
+                rectangle.setMap(map);
+            }
+            else {
+                rectangle.setMap(null);
+                rectangle = null;
+            }
+
+        }
+        function exportSel() {
+            if (rectangle === null) {
+                return;
+            }
+            var selection = [];
+            bounds = rectangle.getBounds();
+            min = bounds.getSouthWest();
+            max = bounds.getNorthEast();
+            var selectionStr = "";
+            for (var i = 0; i < results_markers.length; i++) {
+                marker = results_markers[i];
+                pos = marker.getPosition();
+         
+                if (pos.lng() < max.lng() && pos.lat() < max.lat() && pos.lng() > min.lng() && pos.lat() > min.lat()) {
+                    selection.push(marker.getTitle())
+                    if (selection.length > 1) {
+                        selectionStr = selectionStr + ","
+                    }
+                    selectionStr = selectionStr + i
+                }
+            }
+            //alert(selectionStr)
+            return (selectionStr)
+        }
+        function svQueryCallBack(data, status) {
+
+            if (status === 'OK') {
+
+                try {
+                    containID = false;
+
+                    for (var i = 0; i < samples_panoinfos.length; i++) {
+       
+                        for (var j = 0; j < samples_panoinfos[i].length; j++) {
+                            if (samples_panoinfos[i][j].location.pano == data.location.pano) {
+                                containID = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!containID) {
+
+                        var marker = new google.maps.Marker({
+                            position: data.location.latLng,
+                            title: data,
+                            map: map
+                        });
+                        samples_panoinfos[samples_panoinfos.length - 1].push(data)
+                        samples_markers[samples_markers.length - 1].push(marker)
+                    }
+
+                }
+                catch (err) {
+                    alert(err.message);
+                }
+            }
+        }
+        function querySV(latLng) {
+            sv.getPanorama({ location: latLng, radius: 50 }, svQueryCallBack);
+        }
+
+        // Deletes all markers in the array by removing references to them.
+        function clear() {
+            for (var i = 0; i < samples_markers.length; i++) {
+                for (var j = 0; j < samples_markers[i].length; j++) {
+                    samples_markers[i][j].setMap(null);
+                }
+                samples_markers[i] = [];
+            }
+            samples_markers = [];
+            var path = polyline.getPath();
+            while (path.getLength() > 0) {
+                path.pop();
+            }
+            samplePos = -1;
+            samples_panoinfos = [];
+        }
+        function updateSVData(data, status) {
+
+            if (status === 'OK') {
+                //var marker = new google.maps.Marker({
+                //    position: data.location.latLng,
+                //    map: map,
+                //    icon: {
+                //        path: google.maps.SymbolPath.CIRCLE,
+                //        fillColor: getColor(svf),
+                //        fillOpacity: 0.3,
+                //        strokeColor: getColor(svf),
+                //        strokeWeight: 1,
+                //        optimized: false,
+                //        scale: 100
+                //    },
+                //    title: data.location.description
+                //});
+                //svf = svf + 0.1;
+                //alert(data.location.latLng);
+                try {
+                    //if (data.location.pano != "10")
+                    //{
+
+                    //latlon = data.location.latLng.toString()
+                    //addPoint();
+                    //mapInfo.updateCoords(latlon.substring(1, latlon.length - 2) + "," + data.location.pano);
+                    //mapInfo.capture(latlon.substring(1, latlon.length - 2) + "," + data.location.pano);
+
+                    // }
+                }
+                catch (err) {
+                    alert(err.message);
+                }
+                panorama.setPano(data.location.pano);
+                panorama.setVisible(true);
+            } else {
+                //console.error('Street View data not found for this location.');
+            }
+        }
+        function setSampling( _interpolate,_samplingdist) {
+            interpolate = _interpolate;
+            samplingdist = _samplingdist;
+            //alert(interpolate + "," + samplingdist);
+        }
+        function addPoint() {
+            var path = polyline.getPath();
+            var newlist1 = [];
+            var newlist2 = [];
+            samples_panoinfos.push(newlist1)
+            samples_markers.push(newlist2)
+            if (interpolate && path.getLength() > 0) {
+                preLatLon = path.getAt(path.getLength() - 1);
+                dist = great_circle_distance(preLatLon.lat(), preLatLon.lng(), curLatLon.lat(), curLatLon.lng());
+                numofpoints = dist / samplingdist;
+                lonstep = (curLatLon.lng() - preLatLon.lng()) / numofpoints;
+                latstep = (curLatLon.lat() - preLatLon.lat()) / numofpoints;
+                if (numofpoints < 10000)
+                {
+                    for (var i = 0; i < numofpoints; i++) {
+                        newLon = preLatLon.lng() + (i + 1) * lonstep;
+                        newLat = preLatLon.lat() + (i + 1) * latstep;
+                        querySV(new google.maps.LatLng(newLat, newLon));
+                    }
+                }
+            }
+            else{
+                querySV(curLatLon);
+            }
+            path.push(curLatLon);
+        }
+        function removePoint() {
+
+
+            polyline.getPath().pop();
+            for (var i = 0; i < samples_markers[samples_markers.length-1].length; i++) {
+                samples_markers[samples_markers.length-1][i].setMap(null);
+            }
+            samples_markers[samples_markers.length-1] = null;
+            samples_markers.pop();
+            samples_panoinfos.pop();
+        }
+        function getSample(n) {
+            pos = 0;
+            sample = null
+            for (var i = 0; i < samples_panoinfos.length; i++) {
+                for (var j = 0; j < samples_panoinfos[i].length; j++) {
+                    if (pos == n) {
+                        sample = samples_panoinfos[i][j];
+                        return (sample.location.latLng.lat() + "," + sample.location.latLng.lng() + "," + sample.location.pano);
+                    }
+                    pos = pos + 1;
+                }
+            }
+
+            return (sample.location.latLng.lat() + "," + sample.location.latLng.lng() + "," + sample.location.pano);
+        }
+        function getSample2(n) {
+            pos = 0;
+            sample = null
+            for (var i = 0; i < samples_panoinfos.length; i++) {
+                for (var j = 0; j < samples_panoinfos[i].length; j++) {
+                    if (pos == n) {
+                        sample = samples_panoinfos[i][j];
+                        return (sample);
+                    }
+                    pos = pos + 1;
+                }
+            }
+
+            return (sample);
+        }
+        function setMarker(n, svf, imagesrc) {
+            sample = getSample2(n)
+            var marker = new google.maps.Marker({
+                position: sample.location.latLng,
+                map: map,
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    fillColor: getColor(svf),
+                    fillOpacity: 0.7,
+                    strokeColor: getColor(svf),
+                    strokeWeight: 1,
+                    optimized: false,
+                    scale: 5
+                },
+                title: "SVF=" + String(svf.toFixed(2))
+            });
+     
+            marker.setOpacity(1.0)
+            results_markers.push(marker);
+            var content = imagesrc;
+            var infowindow = new google.maps.InfoWindow({ disableAutoPan: true });
+            google.maps.event.addListener(marker, 'mouseover', (function (marker, imagesrc, infowindow) {
+                return function () {
+                    title = marker.getTitle();
+                    html = '<!DOCTYPE html>' +
+    '<html>' +
+    '<body>' +
+    '<img src="' + imagesrc + '" style="width:256px;height:256px;">' +
+    '</body>' +
+    '</html>'
+                    infowindow.setContent(html);
+                    
+                    infowindow.open(map, marker);
+                };
+            })(marker, content, infowindow));
+   
+            google.maps.event.addListener(marker, 'mouseout', (function (marker, imagesrc, infowindow) {
+                return function () {
+                    infowindow.close();
+                };
+            })(marker, content, infowindow));
+
+
+//            google.maps.event.addListener(marker, 'mouseover', function () {
+
+//                title = marker.getTitle();
+//                //alert(title.substring(10, title.length));
+//                html = '<!DOCTYPE html>' +
+//'<html>' +
+//'<body>' +
+//'<img src="' + title.substring(10, title.length) + '" style="width:256px;height:256px;">' +
+//'</body>' +
+//'</html>'
+//                var infoWindow = new google.maps.InfoWindow({
+//                    //content: marker.getTitle()
+//                    content: html
+//                    //maxWidth: 256,
+//                   // maxHeight: 256
+//                });
+//                infoWindow.open(map, marker);
+//                google.maps.event.addListener(marker, 'mouseout', function () {
+//                    infowindow.close();
+//                });
+//            });
+            //svmarkers[i].setMap(null);
+            //svmarkers[i] = marker;
+        }
+        function getSampleNum() {
+            if (samples_panoinfos == null)
+                return 0;
+            num = 0;
+            for (var i = 0; i < samples_panoinfos.length; i++) {
+                num = num + samples_panoinfos[i].length;
+            }
+            return num;
+        }
+       
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA75dSr64GqC9ixS7M6ihb6gX5FxzzlHMk&callback=initMap"
+                async defer></script>
+    </div>
+    <div class="panes-separator" id="panes-separator"></div>
+    <div class="bottom-pane" id="bottom-pane">
+
+    </div>
+</div>
+
+
+<script>
+
+
+    var topPane = document.getElementById('top-pane');
+    var bottomPane = document.getElementById('bottom-pane');
+    var paneSep = document.getElementById('panes-separator');
+
+    // The script below constrains the target to move horizontally between a top and a bottom virtual boundaries.
+    // - the top limit is positioned at 10% of the screen width
+    // - the bottom limit is positioned at 90% of the screen width
+    var topLimit = 10;
+    var bottomLimit = 90;
+
+
+    paneSep.sdrag(function (el, pageX, startX, pageY, startY, fix) {
+
+        fix.skipY = true;
+
+        if (pageY < window.innerHeight * topLimit / 100) {
+            pageY = window.innerHeight * topLimit / 100;
+            fix.pageY = pageY;
+        }
+        if (pageY > window.innerHeight * bottomLimit / 100) {
+            pageY = window.innerHeight * bottomLimit / 100;
+            fix.pageY = pageY;
+        }
+
+        var cur = pageY / window.innerHeight * 100;
+        if (cur < 0) {
+            cur = 0;
+        }
+        if (cur > window.innerHeight) {
+            cur = window.innerHeight;
+        }
+        fix.skipY = true;
+        fix.skipX = true;
+        var bottom = (100 - cur - 2);
+        topPane.style.height = cur + '%';
+        bottomPane.style.height = bottom + '%';
+
+    }, null, 'horizontal');
+
+
+</script>
+
+</body>
+</html>

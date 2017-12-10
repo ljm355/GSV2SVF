@@ -1,0 +1,183 @@
+==> 2016-09-20 15:35:20 <==
+# cmd: C:\Miniconda2\Scripts\conda-script.py install --yes numpy scipy matplotlib scikit-image pip
+conda-4.1.11-py27_0
+conda-env-2.5.2-py27_0
+console_shortcut-0.1.1-py27_1
+menuinst-1.4.1-py27_0
+pip-8.1.2-py27_0
+pycosat-0.6.1-py27_1
+pycrypto-2.6.1-py27_4
+python-2.7.12-0
+pyyaml-3.11-py27_4
+requests-2.10.0-py27_0
+ruamel_yaml-0.11.14-py27_0
+setuptools-23.0.0-py27_0
+vs2008_runtime-9.00.30729.1-2
+wheel-0.29.0-py27_0
+==> 2016-09-20 15:39:21 <==
+# cmd: C:\Miniconda2\Scripts\conda-script.py install --yes numpy scipy matplotlib scikit-image pip
+-conda-4.1.11-py27_0
+-conda-env-2.5.2-py27_0
++bzip2-1.0.6-vc9_3
++conda-4.2.7-py27_0
++conda-env-2.6.0-0
++cycler-0.10.0-py27_0
++decorator-4.0.10-py27_0
++enum34-1.1.6-py27_0
++freetype-2.5.5-vc9_1
++icu-57.1-vc9_0
++jpeg-8d-vc9_2
++libpng-1.6.22-vc9_0
++libtiff-4.0.6-vc9_2
++matplotlib-1.5.1-np111py27_0
++mkl-11.3.3-1
++networkx-1.11-py27_0
++numpy-1.11.1-py27_1
++openssl-1.0.2h-vc9_0
++pillow-3.3.1-py27_0
++pyparsing-2.1.4-py27_0
++pyqt-4.11.4-py27_6
++python-dateutil-2.5.3-py27_0
++pytz-2016.6.1-py27_0
++qt-5.6.0-vc9_0
++scikit-image-0.12.3-np111py27_1
++scipy-0.18.0-np111py27_0
++sip-4.18-py27_0
++six-1.10.0-py27_0
++tk-8.5.18-vc9_0
++zlib-1.2.8-vc9_3
+# install specs: ['numpy', 'scipy', 'matplotlib', 'scikit-image', 'pip', u'python 2.7* (target=python-2.7.12-0.tar.bz2)', 'conda >=4.1.11', 'conda-env']
+==> 2016-12-02 15:49:29 <==
+# cmd: C:\Miniconda2\Scripts\conda-script.py install -c menpo opencv=2.4.11
+-conda-4.2.7-py27_0
++conda-4.2.13-py27_0
++menpo::opencv-2.4.11-py27_1
+# install specs: ['opencv 2.4.11*', u'python 2.7* (target=python-2.7.12-0.tar.bz2)', 'conda', 'conda-env']
+==> 2016-12-02 18:27:43 <==
+# cmd: C:\Miniconda2\Scripts\conda-script.py install scikit-learn
++scikit-learn-0.18.1-np111py27_0
+# install specs: ['scikit-learn', u'python 2.7* (target=python-2.7.12-0.tar.bz2)', 'conda', 'conda-env']
+==> 2017-09-08 17:46:28 <==
+# cmd: C:\Miniconda2\Scripts\conda-script.py install pyqt=4
+-conda-4.2.13-py27_0
+-pyqt-4.11.4-py27_6
+-qt-5.6.0-vc9_0
+-requests-2.10.0-py27_0
++asn1crypto-0.22.0-py27_0
++cffi-1.10.0-py27_0
++conda-4.3.25-py27_0
++cryptography-1.8.1-py27_0
++idna-2.6-py27_0
++ipaddress-1.0.18-py27_0
++packaging-16.8-py27_0
++pycparser-2.18-py27_0
++pyopenssl-17.0.0-py27_0
++pyqt-4.11.4-py27_7
++qt-4.8.7-vc9_9
++requests-2.14.2-py27_0
+# install specs: ['pyqt 4*', u'python 2.7* (target=python-2.7.12-0.tar.bz2)', 'conda', 'conda-env']
+==> 2017-10-12 22:56:43 <==
+# cmd: C:\Miniconda2\Scripts\conda-script.py install opencv
+-asn1crypto-0.22.0-py27_0
+-bzip2-1.0.6-vc9_3
+-cffi-1.10.0-py27_0
+-conda-4.3.25-py27_0
+-conda-env-2.6.0-0
+-console_shortcut-0.1.1-py27_1
+-cryptography-1.8.1-py27_0
+-cycler-0.10.0-py27_0
+-decorator-4.0.10-py27_0
+-enum34-1.1.6-py27_0
+-freetype-2.5.5-vc9_1
+-icu-57.1-vc9_0
+-idna-2.6-py27_0
+-ipaddress-1.0.18-py27_0
+-jpeg-8d-vc9_2
+-libpng-1.6.22-vc9_0
+-libtiff-4.0.6-vc9_2
+-matplotlib-1.5.1-np111py27_0
+-menuinst-1.4.1-py27_0
+-mkl-11.3.3-1
+-networkx-1.11-py27_0
+-numpy-1.11.1-py27_1
+-openssl-1.0.2h-vc9_0
+-packaging-16.8-py27_0
+-pillow-3.3.1-py27_0
+-pip-8.1.2-py27_0
+-pycosat-0.6.1-py27_1
+-pycparser-2.18-py27_0
+-pycrypto-2.6.1-py27_4
+-pyopenssl-17.0.0-py27_0
+-pyparsing-2.1.4-py27_0
+-pyqt-4.11.4-py27_7
+-python-2.7.12-0
+-python-dateutil-2.5.3-py27_0
+-pytz-2016.6.1-py27_0
+-pyyaml-3.11-py27_4
+-qt-4.8.7-vc9_9
+-requests-2.14.2-py27_0
+-ruamel_yaml-0.11.14-py27_0
+-scikit-image-0.12.3-np111py27_1
+-scikit-learn-0.18.1-np111py27_0
+-scipy-0.18.0-np111py27_0
+-setuptools-23.0.0-py27_0
+-sip-4.18-py27_0
+-six-1.10.0-py27_0
+-tk-8.5.18-vc9_0
+-vs2008_runtime-9.00.30729.1-2
+-wheel-0.29.0-py27_0
+-zlib-1.2.8-vc9_3
++defaults::asn1crypto-0.22.0-py27_0
++defaults::bzip2-1.0.6-vc9_3
++defaults::cffi-1.10.0-py27_0
++defaults::conda-4.3.25-py27_0
++defaults::conda-env-2.6.0-0
++defaults::console_shortcut-0.1.1-py27_1
++defaults::cryptography-1.8.1-py27_0
++defaults::cycler-0.10.0-py27_0
++defaults::decorator-4.0.10-py27_0
++defaults::enum34-1.1.6-py27_0
++defaults::freetype-2.5.5-vc9_1
++defaults::icu-57.1-vc9_0
++defaults::idna-2.6-py27_0
++defaults::ipaddress-1.0.18-py27_0
++defaults::jpeg-8d-vc9_2
++defaults::libpng-1.6.22-vc9_0
++defaults::libtiff-4.0.6-vc9_2
++defaults::matplotlib-1.5.1-np111py27_0
++defaults::menuinst-1.4.1-py27_0
++defaults::mkl-11.3.3-1
++defaults::networkx-1.11-py27_0
++defaults::numpy-1.11.1-py27_1
++defaults::openssl-1.0.2h-vc9_0
++defaults::packaging-16.8-py27_0
++defaults::pillow-3.3.1-py27_0
++defaults::pip-8.1.2-py27_0
++defaults::pycosat-0.6.1-py27_1
++defaults::pycparser-2.18-py27_0
++defaults::pycrypto-2.6.1-py27_4
++defaults::pyopenssl-17.0.0-py27_0
++defaults::pyparsing-2.1.4-py27_0
++defaults::pyqt-4.11.4-py27_7
++defaults::python-2.7.12-0
++defaults::python-dateutil-2.5.3-py27_0
++defaults::pytz-2016.6.1-py27_0
++defaults::pyyaml-3.11-py27_4
++defaults::qt-4.8.7-vc9_9
++defaults::requests-2.14.2-py27_0
++defaults::ruamel_yaml-0.11.14-py27_0
++defaults::scikit-image-0.12.3-np111py27_1
++defaults::scikit-learn-0.18.1-np111py27_0
++defaults::scipy-0.18.0-np111py27_0
++defaults::setuptools-23.0.0-py27_0
++defaults::sip-4.18-py27_0
++defaults::six-1.10.0-py27_0
++defaults::tk-8.5.18-vc9_0
++defaults::vs2008_runtime-9.00.30729.1-2
++defaults::wheel-0.29.0-py27_0
++defaults::zlib-1.2.8-vc9_3
+==> 2017-10-12 22:56:56 <==
+# cmd: C:\Miniconda2\Scripts\conda-script.py install opencv
+-defaults::conda-4.3.25-py27_0
++defaults::conda-4.3.27-py27hcd9d231_0
+# install specs: opencv
